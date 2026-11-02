@@ -312,7 +312,20 @@
       font-size: .95rem;
       color: var(--bone-dim);
     }
-    .site-footer p { max-width: 72rem; margin: 0 auto; }
+    .footer-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: .75rem 2rem;
+    }
+    .site-footer p { margin: 0; }
+    .site-footer nav a {
+      color: var(--bone-dim);
+      text-underline-offset: .25em;
+    }
+    .site-footer nav a:hover { color: var(--bone); }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -473,7 +486,12 @@
   </main>
 
   <footer class="site-footer">
-    <p>&copy; <span id="year">2026</span> Cave Dweller Studios. Made by hand, mostly after dark.</p>
+    <div class="footer-inner">
+      <p>&copy; <span id="year">2026</span> Cave Dweller Studios. Made by hand, mostly after dark.</p>
+      <nav aria-label="Policies">
+        <a href="club-it-up/privacy/">Club It Up privacy policy</a>
+      </nav>
+    </div>
   </footer>
 
   <script>
