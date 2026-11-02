@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cave Dweller Studios</title>
+  <meta name="description" content="Cave Dweller Studios is a small hobby studio building its first app, with more on the way.">
+  <meta name="theme-color" content="#2B2420">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.remove('no-js');</script>
+  <style>
+    @property --r {
+      syntax: '<length>';
+      inherits: true;
+      initial-value: 0px;
+    }
+
+    :root {
+      --stone: #2B2420;
+      --stone-deep: #1F1916;
+      --bone: #EADFC8;
+      --bone-dim: #B8AA92;
+      --ochre-red: #A8432A;
+      --ochre-yellow: #D8A24A;
+      --charcoal: #4A3F37;
+
+      --font: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+      --gutter: clamp(1rem, 5vw, 4rem);
+      --measure: 36rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      font-size: 1.125rem;
+      line-height: 1.55;
+      color: var(--bone);
+      background-color: var(--stone);
+      /* Stone grain: fine speckle plus a soft mottled layer */
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.09'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse 60% 45% at 18% 22%, rgba(0,0,0,.22), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 85% 60%, rgba(0,0,0,.18), transparent 70%),
+        radial-gradient(ellipse 70% 35% at 40% 85%, rgba(255,240,210,.035), transparent 70%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: 3px solid var(--ochre-yellow);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    /* ---------- Hero: the cave wall ---------- */
+
+    .hero {
+      --x: 70%;
+      --y: 38%;
+      --r: 0px;
+      --torch: min(340px, 72vw);
+      position: relative;
+      isolation: isolate;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: var(--gutter);
+      overflow: hidden;
+    }
+
+    .hero.lit,
+    .no-js .hero { --r: var(--torch); }
+
+    .hero.lit { transition: --r 1.4s cubic-bezier(.2, .7, .2, 1); }
+
+    .wall-art {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 0%, rgba(0,0,0,.65) 45%, rgba(0,0,0,.1) 100%);
+              mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 0%, rgba(0,0,0,.65) 45%, rgba(0,0,0,.1) 100%);
+    }
+
+    @media (max-width: 40rem) {
+      .wall-art .figure { display: none; }
+    }
+
+    .torch {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle calc(var(--r) * 1.7) at var(--x) var(--y),
+        rgba(216, 162, 74, .20) 0%,
+        rgba(168, 67, 42, .08) 45%,
+        transparent 72%);
+      mix-blend-mode: screen;
+    }
+
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .wordmark {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -.01em;
+      text-decoration: none;
+    }
+
+    .header-link {
+      font-size: 1rem;
+      color: var(--bone-dim);
+      text-underline-offset: .25em;
+    }
+    .header-link:hover { color: var(--bone); }
+
+    .hero-copy {
+      align-self: end;
+      max-width: 44rem;
+      padding-bottom: clamp(1rem, 4vh, 3rem);
+    }
+
+    .hero h1 {
+      margin: 0 0 1.5rem;
+      font-size: clamp(3.25rem, 10.5vw, 8.25rem);
+      line-height: .9;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      font-variation-settings: 'opsz' 96, 'wdth' 78;
+      text-wrap: balance;
+    }
+
+    .hero .lede {
+      max-width: var(--measure);
+      margin: 0 0 2rem;
+      font-size: clamp(1.125rem, 1.6vw, 1.3rem);
+      color: var(--bone);
+    }
+
+    .button {
+      display: inline-block;
+      padding: .85rem 1.5rem;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--stone-deep);
+      background: var(--ochre-yellow);
+      border: 0;
+      border-radius: 999px 999px 999px 999px / 60% 70% 60% 80%;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button:hover { background: #E6B460; }
+    .button:disabled { opacity: .6; cursor: progress; }
+
+    .torch-hint {
+      margin: 1.75rem 0 0;
+      font-size: .95rem;
+      color: var(--bone-dim);
+    }
+    .torch-hint .touch { display: none; }
+    @media (hover: none) {
+      .torch-hint .mouse { display: none; }
+      .torch-hint .touch { display: inline; }
+    }
+    .no-js .torch-hint { display: none; }
+
+    /* ---------- What we're making ---------- */
+
+    .work {
+      max-width: calc(72rem + 2 * var(--gutter));
+      margin: 0 auto;
+      padding: clamp(4rem, 12vw, 9rem) var(--gutter);
+      display: grid;
+      gap: 2rem 4rem;
+    }
+
+    @media (min-width: 52rem) {
+      .work { grid-template-columns: 1fr 1fr; align-items: start; }
+      .tally { grid-column: 1 / -1; }
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(2.1rem, 4.6vw, 3.5rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -.025em;
+      font-variation-settings: 'opsz' 72, 'wdth' 82;
+      text-wrap: balance;
+    }
+
+    .work p {
+      margin: 0 0 1rem;
+      max-width: var(--measure);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: .5rem;
+      font-weight: 600;
+      color: var(--ochre-yellow);
+    }
+    .status::before {
+      content: '';
+      width: .6rem;
+      height: .6rem;
+      border-radius: 50%;
+      background: var(--ochre-yellow);
+      box-shadow: 0 0 12px 2px rgba(216, 162, 74, .55);
+    }
+
+    .tally {
+      margin-top: 2rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid var(--charcoal);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem 2.5rem;
+    }
+    .tally svg { width: 190px; height: 90px; flex: none; }
+    .tally p { margin: 0; color: var(--bone-dim); max-width: 28rem; }
+
+    /* ---------- Notify ---------- */
+
+    .notify {
+      background: var(--stone-deep);
+      padding: clamp(4rem, 10vw, 7rem) var(--gutter);
+    }
+
+    .notify-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .notify p {
+      max-width: var(--measure);
+      margin: 1rem 0 2rem;
+    }
+
+    .signup label {
+      display: block;
+      margin-bottom: .5rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .field-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      max-width: 34rem;
+    }
+
+    .signup input[type="email"] {
+      flex: 1 1 16rem;
+      min-width: 0;
+      padding: .85rem 1.1rem;
+      font: inherit;
+      font-size: 1.05rem;
+      color: var(--bone);
+      background: var(--stone);
+      border: 2px solid var(--charcoal);
+      border-radius: 14px;
+    }
+    .signup input[type="email"]::placeholder { color: #8C7F6C; }
+    .signup input[type="email"]:focus-visible {
+      outline: none;
+      border-color: var(--ochre-yellow);
+    }
+
+    .hp { position: absolute; left: -9999px; }
+
+    .form-status {
+      min-height: 1.6em;
+      margin: 1rem 0 0;
+      font-size: 1rem;
+    }
+    .form-status[data-state="success"] { color: var(--ochre-yellow); }
+    .form-status[data-state="error"] { color: #E08A6F; }
+
+    /* ---------- Footer ---------- */
+
+    .site-footer {
+      background: var(--stone-deep);
+      border-top: 1px solid var(--charcoal);
+      padding: 2rem var(--gutter);
+      font-size: .95rem;
+      color: var(--bone-dim);
+    }
+    .site-footer p { max-width: 72rem; margin: 0 auto; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero.lit { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared SVG filters -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <header class="hero" id="top">
+    <!-- Cave paintings, revealed by the torch -->
+    <svg class="wall-art" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="spray">
+          <stop offset="0" stop-color="#A8432A" stop-opacity=".95"/>
+          <stop offset=".55" stop-color="#A8432A" stop-opacity=".7"/>
+          <stop offset="1" stop-color="#A8432A" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="1" seed="2" result="t"/>
+          <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75" result="a"/>
+          <feComposite in="SourceGraphic" in2="a" operator="in"/>
+        </filter>
+        <g id="hand">
+          <ellipse cx="0" cy="18" rx="36" ry="42"/>
+          <rect x="-8" y="-96" width="17" height="82" rx="8.5" transform="rotate(-2)"/>
+          <rect x="-33" y="-84" width="16" height="74" rx="8" transform="rotate(-10)"/>
+          <rect x="16" y="-86" width="16" height="74" rx="8" transform="rotate(8)"/>
+          <rect x="34" y="-60" width="14" height="58" rx="7" transform="rotate(18)"/>
+          <rect x="-62" y="-22" width="17" height="60" rx="8.5" transform="rotate(-48 -54 30)"/>
+          <rect x="-27" y="38" width="54" height="95" rx="12"/>
+        </g>
+        <mask id="handMask" maskUnits="userSpaceOnUse" x="-140" y="-140" width="280" height="280">
+          <rect x="-140" y="-140" width="280" height="280" fill="#fff"/>
+          <use href="#hand" fill="#000"/>
+        </mask>
+      </defs>
+
+      <!-- Hand stencils -->
+      <g transform="translate(150 300) rotate(-14)">
+        <circle r="128" fill="url(#spray)" filter="url(#grain)" mask="url(#handMask)"/>
+      </g>
+      <g transform="translate(620 170) rotate(5) scale(.9)">
+        <circle r="128" fill="url(#spray)" filter="url(#grain)" mask="url(#handMask)"/>
+      </g>
+      <g transform="translate(1060 610) rotate(16) scale(1.05)">
+        <circle r="128" fill="url(#spray)" filter="url(#grain)" mask="url(#handMask)"/>
+      </g>
+
+      <!-- Sun spiral -->
+      <g transform="translate(360 150)" fill="none" stroke="#D8A24A" stroke-width="7" stroke-linecap="round" filter="url(#rough)">
+        <path d="M0 0 a6 6 0 0 1 12 0 a12 12 0 0 1 -24 0 a18 18 0 0 1 36 0 a24 24 0 0 1 -48 0 a30 30 0 0 1 60 0 a36 36 0 0 1 -72 0"/>
+      </g>
+
+      <!-- A phone, painted like everything else on the wall -->
+      <g transform="translate(860 170) rotate(-7)" filter="url(#rough)">
+        <rect x="0" y="0" width="118" height="200" rx="20" fill="none" stroke="#A8432A" stroke-width="8"/>
+        <rect x="22" y="34" width="26" height="26" rx="6" fill="#D8A24A"/>
+        <rect x="70" y="34" width="26" height="26" rx="6" fill="none" stroke="#A8432A" stroke-width="5"/>
+        <rect x="22" y="80" width="26" height="26" rx="6" fill="none" stroke="#A8432A" stroke-width="5"/>
+        <rect x="70" y="80" width="26" height="26" rx="6" fill="none" stroke="#A8432A" stroke-width="5"/>
+        <line x1="44" y1="176" x2="74" y2="176" stroke="#A8432A" stroke-width="6" stroke-linecap="round"/>
+      </g>
+
+      <!-- Figure pointing at the phone -->
+      <g class="figure" transform="translate(770 440)" fill="none" stroke="#A8432A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#rough)">
+        <circle cx="0" cy="-62" r="15" fill="#A8432A"/>
+        <path d="M0 -44 L4 30"/>
+        <path d="M2 -24 L44 -66 L60 -96"/>
+        <path d="M2 -20 L-30 6"/>
+        <path d="M4 30 L-20 84"/>
+        <path d="M4 30 L28 82"/>
+      </g>
+
+      <!-- Dot rows and tally marks -->
+      <g fill="#A8432A" filter="url(#rough)">
+        <circle cx="470" cy="660" r="8"/><circle cx="505" cy="652" r="8"/><circle cx="540" cy="660" r="8"/>
+        <circle cx="575" cy="652" r="8"/><circle cx="610" cy="660" r="8"/><circle cx="645" cy="652" r="8"/>
+        <circle cx="680" cy="660" r="8"/>
+      </g>
+      <g stroke="#D8A24A" stroke-width="7" stroke-linecap="round" filter="url(#rough)">
+        <line x1="420" y1="420" x2="424" y2="500"/>
+        <line x1="445" y1="418" x2="447" y2="502"/>
+        <line x1="470" y1="421" x2="472" y2="499"/>
+      </g>
+    </svg>
+    <div class="torch" aria-hidden="true"></div>
+
+    <nav class="site-header" aria-label="Main">
+      <a class="wordmark" href="#top">Cave Dweller Studios</a>
+      <a class="header-link" href="#notify">Get notified</a>
+    </nav>
+
+    <div class="hero-copy">
+      <h1>We build apps in the cave.</h1>
+      <p class="lede">Cave Dweller Studios is a small hobby studio. We're heads down on our first app, with more ideas scratched on the wall behind it.</p>
+      <a class="button" href="#notify">Get notified at launch</a>
+      <p class="torch-hint" aria-hidden="true">
+        <span class="mouse">Move your cursor to light up the wall.</span>
+        <span class="touch">Tap or drag to light up the wall.</span>
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="work" aria-labelledby="work-title">
+      <h2 id="work-title">Our first app is on the workbench.</h2>
+      <div>
+        <p>It's early, and we build in our spare time, so we're not putting a date on it yet. When it's ready to show, the name and the details will go up here first.</p>
+        <p class="status">In development</p>
+      </div>
+
+      <div class="tally">
+        <svg viewBox="0 0 190 90" role="img" aria-label="One tally mark lit, four more waiting">
+          <g stroke-width="9" stroke-linecap="round" filter="url(#rough)">
+            <line x1="20" y1="12" x2="23" y2="78" stroke="#D8A24A"/>
+            <g stroke="#B8AA92" opacity=".28" stroke-dasharray="2 14">
+              <line x1="57" y1="10" x2="59" y2="80"/>
+              <line x1="94" y1="13" x2="95" y2="77"/>
+              <line x1="131" y1="11" x2="133" y2="79"/>
+              <line x1="168" y1="12" x2="169" y2="78"/>
+            </g>
+          </g>
+        </svg>
+        <p>One app in progress. Plenty of wall left for the next ones.</p>
+      </div>
+    </section>
+
+    <section class="notify" id="notify" aria-labelledby="notify-title">
+      <div class="notify-inner">
+        <h2 id="notify-title">Want to know when it's out?</h2>
+        <p>Leave your email and we'll send a note when the first app launches. We'll only write when there's something to launch.</p>
+
+        <form class="signup" id="signup" novalidate>
+          <label for="email">Email address</label>
+          <div class="field-row">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button class="button" type="submit">Notify me</button>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="website">Leave this empty</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year">2026</span> Cave Dweller Studios. Made by hand, mostly after dark.</p>
+  </footer>
+
+  <script>
+    /* =========================================================
+       Supabase settings
+       Paste your Project URL and your anon (or publishable) key
+       from Supabase: Project Settings > API.
+       Both are safe to put in a public page as long as Row
+       Level Security is on for the waitlist table.
+       ========================================================= */
+    const SUPABASE_URL = 'https://komzfcdulhkhewnentut.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ZiCDFCSPaqEPK0DGtM9M6g_RZywSho_';
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Torch ---------- */
+    (function () {
+      const hero = document.querySelector('.hero');
+      let frame = null;
+
+      function moveTo(clientX, clientY) {
+        const rect = hero.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        if (frame) cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          hero.style.setProperty('--x', x + 'px');
+          hero.style.setProperty('--y', y + 'px');
+        });
+      }
+
+      hero.addEventListener('pointermove', (e) => moveTo(e.clientX, e.clientY));
+      hero.addEventListener('pointerdown', (e) => moveTo(e.clientX, e.clientY));
+
+      // Light the torch once the page has painted
+      requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('lit')));
+    })();
+
+    /* ---------- Waitlist signup ---------- */
+    (function () {
+      const form = document.getElementById('signup');
+      const input = document.getElementById('email');
+      const trap = document.getElementById('website');
+      const status = document.getElementById('form-status');
+      const button = form.querySelector('button');
+
+      function say(text, state) {
+        status.textContent = text;
+        status.dataset.state = state || '';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!input.checkValidity()) {
+          say('Enter an email address like name@example.com.', 'error');
+          input.focus();
+          return;
+        }
+
+        // Bots tend to fill every field. Quietly accept and drop.
+        if (trap.value) {
+          say("You're on the list. We'll email you when it launches.", 'success');
+          form.reset();
+          return;
+        }
+
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          say("Signups aren't connected yet. Check back soon.", 'error');
+          console.warn('Add SUPABASE_URL and SUPABASE_KEY near the bottom of index.html.');
+          return;
+        }
+
+        const headers = {
+          'apikey': SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        };
+        // Legacy anon keys are JWTs and also go in the Authorization header
+        if (SUPABASE_KEY.startsWith('eyJ')) headers['Authorization'] = 'Bearer ' + SUPABASE_KEY;
+
+        button.disabled = true;
+        button.textContent = 'Adding you…';
+        say('', '');
+
+        try {
+          const res = await fetch(SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/waitlist', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ email: input.value.trim().toLowerCase() })
+          });
+
+          if (res.ok) {
+            say("You're on the list. We'll email you when it launches.", 'success');
+            form.reset();
+          } else if (res.status === 409) {
+            say('That email is already on the list.', 'success');
+          } else {
+            say("That didn't go through. Try again in a minute.", 'error');
+            console.error('Waitlist insert failed:', res.status, await res.text());
+          }
+        } catch (err) {
+          say("That didn't go through. Check your connection and try again.", 'error');
+          console.error(err);
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Notify me';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
