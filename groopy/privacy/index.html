@@ -147,9 +147,9 @@
 
     <p><strong>Your name and profile photo.</strong> The name you choose, and a photo if you add one, are shown to people who share a club with you. Nobody else can see them.</p>
 
-    <p><strong>What you write and add to a club.</strong> Reviews and scores, board posts, replies, discussion messages, emoji reactions, and the topics, reviews and discussions you add. These are visible to the members of that club and to nobody else.</p>
+    <p><strong>What you write and add to a club.</strong> Reviews and scores, board posts, polls and your votes in them, recommendations and your answers to them, replies, discussion messages, emoji reactions, and the reviews, discussions and groups you add. These are visible to the members of that club and to nobody else.</p>
 
-    <p><strong>Photos you choose.</strong> Club icons, covers for topics and items, photos on board posts, and your profile photo. Each one is resized on your phone and saved as a new image before it is uploaded, which leaves behind the location and camera details the original photo carried. The app asks for access to your photo library only when you choose a photo, and reads only the photo you pick.</p>
+    <p><strong>Photos you choose.</strong> Club icons, covers for reviews, photos on board posts, and your profile photo. Each one is resized on your phone and saved as a new image before it is uploaded, which leaves behind the location and camera details the original photo carried. The app asks for access to your photo library only when you choose a photo, and reads only the photo you pick.</p>
 
     <p><strong>Role requests.</strong> If you ask for a higher role in a club, the request and any note you add are shown to that club's admins.</p>
 
@@ -167,12 +167,16 @@
 
     <p>A copy is kept on your device so screens open without waiting on the network. The shared copy lives in a Postgres database and private file storage hosted by Supabase in the United States. Photos are stored privately: only members of the club a photo belongs to can see it, and only people who share a club with you can see your profile photo.</p>
 
-    <p>Three other companies are involved, and only these three:</p>
+    <p>Five other companies are involved, and only these five:</p>
     <ul>
-      <li><strong>Supabase</strong> hosts the database, the sign-in service and stored photos.</li>
+      <li><strong>Supabase</strong> hosts the database, the sign-in service, stored photos and the server that runs title lookups.</li>
       <li><strong>Resend</strong> sends sign-in emails. It sees your email address.</li>
-      <li><strong>TMDB (The Movie Database)</strong> answers film and TV lookups when you search for a title. Today the app asks TMDB directly, so TMDB sees your device's network address along with what you typed. This is planned to move to our own server, which will stop that.</li>
+      <li><strong>TMDB (The Movie Database)</strong> answers film and TV lookups.</li>
+      <li><strong>IGDB</strong>, run by Twitch, answers video game lookups.</li>
+      <li><strong>Google Books</strong>, run by Google, answers book lookups.</li>
     </ul>
+
+    <p>When you search for a title, the app sends your search to our own server on Supabase, which asks TMDB, IGDB or Google Books and passes the answer back. They see what was searched for, but never your device's network address, your name or anything else about you. Book covers are fetched the same way. If you tap View on Google Books, your browser opens Google's own page and Google's privacy policy applies there.</p>
 
     <h2 id="how-long">How long it is kept</h2>
 
@@ -187,7 +191,7 @@
 
     <p>Go to Me, then Delete my account, inside the app.</p>
 
-    <p>This removes your account, your profile photo, your membership of every club, your name, your emoji reactions, any role requests you made, and your settings. Reviews and posts you wrote stay in their clubs without your name on them, so other members do not lose their club's history. A club where you were the only member is deleted with you.</p>
+    <p>This removes your account, your profile photo, your membership of every club, your name, your emoji reactions, your poll votes and answers to recommendations, any role requests you made, and your settings. Reviews and posts you wrote stay in their clubs without your name on them, so other members do not lose their club's history. A club where you were the only member is deleted with you.</p>
 
     <p>If you would rather everything you wrote was removed as well, write to the address below and ask.</p>
 
